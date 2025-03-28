@@ -1,20 +1,28 @@
 /* import BasicTypes from './typescript/BasicTypes' */
 /*import ObjectLiterals from './typescript/ObjectLiterals'*/
 /* import { BasicFunctions } from './typescript/BasicFunctions' */
-
+/* import { Counter } from "./components/Counter"; */
 import "./App.css";
+import { LoginPage } from "./components/LoginPage";
+import { AuthProvider } from "./context/AuthContext";
+
 
 function App() {
   return (
-    <>
-      <div className="flex justify-center items-center h-svh">
-        <h1 className="text-4xl mb-5">Hola React!</h1>
-      </div>
+      <AuthProvider>
+      <div className="flex flex-col justify-center items-center h-svh">
+        <h1 className="text-4xl mb-5">React + TS</h1>
 
       {/* <BasicTypes /> */}
       {/*<ObjectLiterals/> */}
       {/* <BasicFunctions/> */}
-    </>
+      { /* <Counter/> */ }
+      <LoginPage />
+      </div>
+
+      </AuthProvider>
+   
+
   );
 }
 
