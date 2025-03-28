@@ -1,5 +1,6 @@
 import { createContext, useContext, PropsWithChildren, useEffect, useState } from "react";
 
+
 enum AuthStatus {
   "checking" = 'checking',
   "authenticate" = 'authenticate',
@@ -9,8 +10,14 @@ enum AuthStatus {
 interface AuthState {
   status: AuthStatus;
   token?: string;
+
   user?: User;
   isChecking: boolean;
+  isAuthenticated: boolean;
+
+  //Methods
+  loginWithEmailPassword: (email: string, password: string) => void;
+  logOut: () => void;
 }
 
 interface User {
@@ -24,7 +31,9 @@ export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
 
-const [status, setStatus] = useState(AuthStatus.checking)
+const [status, setStatus] = useState(AuthStatus.checking);
+
+const [user, setUser] = useState<User>()
 
 
   useEffect(() => {
@@ -32,16 +41,35 @@ const [status, setStatus] = useState(AuthStatus.checking)
     setStatus( AuthStatus.unauthenticated);
    }, 1500)
   }, [])
-  
 
+  const loginWithEmailPassword = (email: string, password: string) => {
+
+    setUser({
+      name: 'Federico Nickler',
+      email: email,
+    });
+    setStatus(AuthStatus.authenticate)
+  
+  }
+
+  const logOut = () => {
+    setUser(undefined)
+    setStatus(AuthStatus.unauthenticated)  
+  }
 
   return (
     <>
       <AuthContext.Provider
         value={{
           status: status,
+          user: user,
 
           isChecking: status === AuthStatus.checking,
+          isAuthenticated: status === AuthStatus.authenticate,
+
+          //Method
+          loginWithEmailPassword, 
+          logOut
         }}
       >
         {children}
